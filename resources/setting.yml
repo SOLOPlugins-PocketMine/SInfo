@@ -1,0 +1,38 @@
+# view 부분을 수정하시면 화면에 띄워지는 문구를 변경할 수 있습니다.
+
+# {MOTD}          서버의 MOTD 입니다.
+# {TPS}           서버의 TPS 상태 입니다.
+# {AVERAGETPS}    서버의 평균 TPS 입니다.
+# {PLAYERS}       서버의 접속 인원 입니다.
+# {MAXPLAYERS}    서버에 접속 가능한 최대 인원입니다.
+# {DATE}          날짜를 표시합니다. *월 *일 형식으로 표시됩니다.
+# {TIME}          시간을 표시합니다. *:* am/pm 형식으로 표시됩니다.
+
+# {WORLD}         플레이어가 속해있는 월드 이름입니다.
+# {WORLDPLAYERS}  플레이어가 속해있는 월드의 플레이어 수 입니다.
+# {WORLDTIME}     월드의 시간입니다.
+
+# {NAME}          플레이어의 이름입니다.
+# {MONEY}         플레이어가 소지한 돈입니다. ***만 ****원 형식으로 표시됩니다. (EconomyAPI 플러그인 필요)
+# {MONEYRANK}     플레이어의 돈 순위입니다. (EconomyAPI 3.0.0 이상 플러그인 필요)
+# {X}             플레이어의 X 좌표입니다.
+# {Y}             플레이어의 Y 좌표입니다.
+# {Z}             플레이어의 Z 좌표입니다.
+# {HEALTH}        플레이어의 현재 체력입니다.
+# {MAXHEALTH}     플레이어의 최대 체력입니다.
+# {HEALTHBAR}     플레이어의 체력을 막대 모양으로 표시합니다. |||||||||||||||||||| 형식으로 표시됩니다.
+# {HEARTBAR}      플레이어의 체력을 하트 모양으로 표시합니다. ♥♥♥♥♥♥♥♥♥♥ 형식으로 표시됩니다.
+# {GAMEMODE}      플레이어의 게임모드입니다.
+# {DIRECTION}     플레이어가 바라보는 방향입니다. 0, 1, 2, 3 으로 표시됩니다. (동=3, 서=1, 남=0, 북=2)
+# {DIRECTIONNAME} 플레이어가 바라보는 방향입니다. 동, 서, 남, 북 으로 표시됩니다.
+
+enable-text-on-screen: true
+
+text-on-screen-format: |-
+  §l{MOTD}§r
+  §b접속자 수 : §f{PLAYERS}/{MAXPLAYERS}명
+  §b현재 월드 : §f{WORLD} ({WORLDPLAYERS}명)
+  §b소지한 돈 : §f{MONEY} ({MONEYRANK}위)
+  §b좌표 : §fx={X}, y={Y}, z={Z}
+
+enable-replacable-chat: false
