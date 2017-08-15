@@ -155,8 +155,8 @@ class SInfo extends PluginBase implements Listener{
 			$this->serverInfoReplacerList[] = new $class();
 		}
 
-		$this->getServer()->getScheduler()->scheduleRepeatingTask(new class($this) extends PluginTask{
-			public function onRun(int $currentTick){
+		$this->getServer()->getScheduler()->scheduleRepeatingTask(new class($this) extends SInfoTask{
+			public function _onRun(int $currentTick){
 				$this->owner->handleTick($currentTick);
 			}
 		}, 1);
