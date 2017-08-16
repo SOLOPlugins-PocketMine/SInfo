@@ -230,6 +230,9 @@ class SInfo extends PluginBase implements Listener{
 		}
 	}
 
+	/**
+	 * @priority <HIGHEST>
+	 */
 	public function handlePlayerChat(PlayerChatEvent $event){
 		if ($event->isCancelled()) return;
 		$message = $event->getMessage();
