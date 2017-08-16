@@ -231,10 +231,10 @@ class SInfo extends PluginBase implements Listener{
 	}
 
 	/**
-	 * @priority <HIGHEST>
+	 * @priority HIGHEST
+	 * @ignorecancelled true
 	 */
 	public function handlePlayerChat(PlayerChatEvent $event){
-		if ($event->isCancelled()) return;
 		$message = $event->getMessage();
 		if(preg_match('/{.+}/', $message)){
 			foreach($this->serverInfoReplacerList as $replacer){
