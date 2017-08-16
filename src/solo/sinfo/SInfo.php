@@ -230,6 +230,10 @@ class SInfo extends PluginBase implements Listener{
 		}
 	}
 
+	/**
+	 * @priority HIGHEST
+	 * @ignorecancelled true
+	 */
 	public function handlePlayerChat(PlayerChatEvent $event){
 		$message = $event->getMessage();
 		if(preg_match('/{.+}/', $message)){
