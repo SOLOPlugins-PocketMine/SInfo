@@ -105,7 +105,7 @@ class SInfo extends PluginBase implements Listener{
 		$this->saveResource("setting.yml");
 		$this->setting = new Config($this->getDataFolder() . "setting.yml", Config::YAML);
 
-		$this->adjustHorizontal = intval($this->setting->get("adjust-horizontal-text-on-screen", 3));
+		$this->adjustHorizontal = intval($this->setting->get("adjust-horizontal-text-on-screen", 0));
 		$this->adjustVertical = intval($this->setting->get("adjust-vertical-text-on-screen", -3));
 
 		self::$economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
@@ -237,7 +237,7 @@ class SInfo extends PluginBase implements Listener{
 				}
 				switch($this->setting->get("text-on-screen-channel", "tip")){
 					case "popup": $player->sendPopup($send); break;
-					case "actionbar": $player->sendActionbar($send); break;
+					case "actionbar": $player->addActionBarMessage($send); break;
 					default: $player->sendTip($send); break;
 				}
 			}
