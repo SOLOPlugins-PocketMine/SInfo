@@ -1,3 +1,5 @@
+# view 부분을 수정하시면 화면에 띄워지는 문구를 변경할 수 있습니다.
+
 # {MOTD}          서버의 MOTD 입니다.
 # {TPS}           서버의 TPS 상태 입니다.
 # {AVERAGETPS}    서버의 평균 TPS 입니다.
@@ -24,7 +26,18 @@
 # {DIRECTION}     플레이어가 바라보는 방향입니다. 0, 1, 2, 3 으로 표시됩니다. (동=3, 서=1, 남=0, 북=2)
 # {DIRECTIONNAME} 플레이어가 바라보는 방향입니다. 동, 서, 남, 북 으로 표시됩니다.
 
-enable-text-on-screen: true
+# 화면에 띄워지는 텍스트의 채널을 설정합니다.
+# popup, tip, actionbar 중 하나를 입력하세요.
+# tip을 권장합니다.
+text-on-screen-channel: tip
+
+# 텍스트의 수평선상 위치를 조절합니다. 음수는 왼쪽, 0은 중앙, 양수는 오른쪽 입니다.
+# -3 ~ 3 사이의 값을 넣으세요
+adjust-horizontal-text-on-screen: 0
+
+# 텍스트의 수직선상 위치를 조절합니다. 음수는 아래쪽, 0은 중앙, 양수는 위쪽입니다.
+# -3 ~ 3 사이의 값을 넣으세요
+adjust-vertical-text-on-screen: '-3'
 
 text-on-screen-format: |-
   §l{MOTD}§r

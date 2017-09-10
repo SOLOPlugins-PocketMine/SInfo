@@ -23,19 +23,12 @@ class SInfo extends PluginBase implements Listener{
 	/** @var EconomyAPI */
 	private static $economyapi = null;
 
-	/** @var SAuth */
-	private static $sauth = null;
-
 	public static function getInstance() : SInfo{
 		return self::$instance;
 	}
 
 	public static function isExistEconomyAPI() : bool{
 		return self::$economyapi !== null;
-	}
-
-	public static function isExistSAuth() : bool{
-		return self::$sauth !== null;
 	}
 
 	public static function getMoney($player){
@@ -91,11 +84,14 @@ class SInfo extends PluginBase implements Listener{
 	}
 
 	/** @var Config */
-	public $setting;
+	private $setting;
 
-	public $playerInfoReplacerList = [];
-	public $worldInfoReplacerList = [];
-	public $serverInfoReplacerList = [];
+	private $playerInfoReplacerList = [];
+	private $worldInfoReplacerList = [];
+	private $serverInfoReplacerList = [];
+
+	private $adjustHorizontal = 0;
+	private $adjustVertical = 0;
 
 	public function onLoad(){
 		if(self::$instance !== null){
@@ -109,9 +105,10 @@ class SInfo extends PluginBase implements Listener{
 		$this->saveResource("setting.yml");
 		$this->setting = new Config($this->getDataFolder() . "setting.yml", Config::YAML);
 
-		self::$economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+		$this->adjustHorizontal = intval($this->setting->get("adjust-horizontal-text-on-screen", 3));
+		$this->adjustVertical = intval($this->setting->get("adjust-vertical-text-on-screen", -3));
 
-		self::$sauth = $this->getServer()->getPluginManager()->getPlugin("SAuth");
+		self::$economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 
 		$classBase = "solo\\sinfo\\replacer\\";
 		foreach([
@@ -164,6 +161,10 @@ class SInfo extends PluginBase implements Listener{
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 	}
 
+	public function onDisable(){
+
+	}
+
 	public function addServerInfoReplacer(ServerInfoReplacer $replacer){
 		$this->serverInfoReplacerList[] = $replacer;
 	}
@@ -191,7 +192,19 @@ class SInfo extends PluginBase implements Listener{
 	public function handleTick(int $currentTick){
 		static $currentText = null;
 		if($currentTick % 20 === 0 || $currentText === null){
-			$currentText = $this->setting->get("text-on-screen-format");
+			$horizontal = $this->adjustHorizontal;
+			$vertical = $this->adjustVertical;
+			$currentText =
+				implode("\n", array_map(function($string) use($horizontal){
+					if($horizontal == 0){
+						return $string;
+					}else if($horizontal < 0){
+						return $string . str_repeat(" ", $horizontal * -20);
+					}else{
+						return str_repeat(" ", $horizontal * 20) . $string;
+					}
+				}, explode("\n", $this->setting->get("text-on-screen-format"))))
+				. str_repeat("\n ", ($vertical + 3) * 5);
 			foreach($this->serverInfoReplacerList as $replacer){
 				if($replacer->canReplace($currentText)){
 					$currentText = $replacer->replace($currentText, $this->getServer());
@@ -216,16 +229,17 @@ class SInfo extends PluginBase implements Listener{
 		$c = $currentTick;
 		foreach($this->getServer()->getOnlinePlayers() as $player){
 			if($c++ % 20 === 0){
-				if(self::isExistSAuth() && !self::$sauth->isLoggedIn($player)){
-					continue;
-				}
 				$send = $currentText_level[$player->getLevel()->getFolderName()];
 				foreach($this->playerInfoReplacerList as $replacer){
 					if($replacer->canReplace($send)){
 						$send = $replacer->replace($send, $player);
 					}
 				}
-				$player->sendTip($send);
+				switch($this->setting->get("text-on-screen-channel", "tip")){
+					case "popup": $player->sendPopup($send); break;
+					case "actionbar": $player->sendActionbar($send); break;
+					default: $player->sendTip($send); break;
+				}
 			}
 		}
 	}
@@ -255,9 +269,5 @@ class SInfo extends PluginBase implements Listener{
 			}
 			$event->setMessage($message);
 		}
-	}
-
-	public function onDisable(){
-
 	}
 }
