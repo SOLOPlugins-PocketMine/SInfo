@@ -8,7 +8,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\utils\Config;
 
 use solo\sinfo\replacer\server\ServerInfoReplacer;
@@ -152,8 +152,14 @@ class SInfo extends PluginBase implements Listener{
 			$this->serverInfoReplacerList[] = new $class();
 		}
 
-		$this->getServer()->getScheduler()->scheduleRepeatingTask(new class($this) extends SInfoTask{
-			public function _onRun(int $currentTick){
+		$this->getScheduler()->scheduleRepeatingTask(new class($this) extends Task{
+			private $owner;
+
+			public function __construct(SInfo $owner){
+				$this->owner = $owner;
+			}
+
+			public function onRun(int $currentTick){
 				$this->owner->handleTick($currentTick);
 			}
 		}, 1);
