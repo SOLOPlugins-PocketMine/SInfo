@@ -1,5 +1,6 @@
 # SInfo
 ![](https://i.imgur.com/TMWyyJz.png)
+
 플레이어의 화면에 정보를 표시하자
 
 <br>
